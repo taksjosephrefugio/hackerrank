@@ -13,6 +13,19 @@ void flush_input_buffer() {
 	while ((c = getchar()) != '\n' && c != EOF) { }
 }
 
+void UPDATE_STRUCT(NAME_VALUE_PAIR *struct_placeholder, int size_of_struct) {
+	for (int i = 0; i < size_of_struct; i++) {
+		// Get user name
+		char tempstring[MAX_STR_LIM];
+		scanf("%s", tempstring);
+		strcpy(struct_placeholder[i].name, tempstring);
+
+		// Get user number
+		scanf("%d", &struct_placeholder[i].number);
+	}
+	printf("\n\n");
+}
+
 int main()
 {	
 	printf("======= USER INPUT SECTION =========\n");
@@ -20,17 +33,7 @@ int main()
 	scanf("%d", &account_count);
 
 	NAME_VALUE_PAIR phonebook[account_count];
-
-	for (int i = 0; i < account_count; i++) {
-		// Get user name
-		char tempstring[MAX_STR_LIM];
-		scanf("%s", tempstring);
-		strcpy(phonebook[i].name, tempstring);
-
-		// Get user number
-		scanf("%d", &phonebook[i].number);
-	}
-	printf("\n\n");
+	UPDATE_STRUCT(&phonebook, account_count);
 
 	printf("*** Printing Results\n");
 	for (int i = 0; i < account_count; i++) {
@@ -66,7 +69,6 @@ int main()
 	// 		}
 	// 	}	
 	// }
-
 	return 0;
 }
 
