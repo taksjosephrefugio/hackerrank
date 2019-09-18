@@ -13,7 +13,7 @@ void flush_input_buffer() {
 	while ((c = getchar()) != '\n' && c != EOF) { }
 }
 
-void UPDATE_STRUCT(NAME_VALUE_PAIR *struct_placeholder, int size_of_struct) {
+void UPDATE_STRUCT(NAME_VALUE_PAIR* struct_placeholder, int size_of_struct) {
 	for (int i = 0; i < size_of_struct; i++) {
 		// Get user name
 		char tempstring[MAX_STR_LIM];
@@ -32,15 +32,11 @@ int main()
 	int account_count = 0;
 	scanf("%d", &account_count);
 
+	// Populate key-value data from user input
 	NAME_VALUE_PAIR phonebook[account_count];
-	UPDATE_STRUCT(&phonebook, account_count);
+	UPDATE_STRUCT(phonebook, account_count);
 
-	printf("*** Printing Results\n");
-	for (int i = 0; i < account_count; i++) {
-		printf("%s\t%d\n", phonebook[i].name, phonebook[i].number);
-	}
-	printf("\n\n");
-	
+	// Flushing input buffer	
 	flush_input_buffer();
 	
 	printf("======== TESTING SECTION ===========\n");
@@ -53,6 +49,9 @@ int main()
 	printf("%s\t%ld\n", phonebook[0].name, strlen(phonebook[0].name));
 	printf("%s\t%ld\n", phonebook[1].name, strlen(phonebook[1].name));
 	printf("%s\t%ld\n", querry, strlen(querry));
+	printf("%d\n", strcmp(querry, phonebook[0].name));
+
+	//FIXME: Detect empty line input to querry. Might have to do it in hackerrank.
 
 	// while(true) {
 	// 	printf("Enter string to test:\t");
