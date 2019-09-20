@@ -13,7 +13,8 @@ void flush_input_buffer() {
 	while ((c = getchar()) != '\n' && c != EOF) { }
 }
 
-void UPDATE_STRUCT(NAME_VALUE_PAIR* struct_placeholder, int size_of_struct) {
+void UPDATE_STRUCT(NAME_VALUE_PAIR* struct_placeholder, int size_of_struct) 
+{
 	for (int i = 0; i < size_of_struct; i++) {
 		// Get user name
 		char tempstring[MAX_STR_LIM];
@@ -25,6 +26,16 @@ void UPDATE_STRUCT(NAME_VALUE_PAIR* struct_placeholder, int size_of_struct) {
 	}
 	printf("\n\n");
 }
+
+char* get_string() 
+{
+	static char temp[MAX_STR_LIM];
+	printf("Enter string to test:\t");
+	scanf("%s", temp);
+	return temp;
+}
+
+
 
 int main()
 {	
@@ -42,16 +53,13 @@ int main()
 	printf("======== TESTING SECTION ===========\n");
 	// Prompting user to enter string to test
 	char querry[MAX_STR_LIM];
-	printf("Enter string to test:\t");
-	scanf("%s", querry);
+	strcpy(querry, get_string());
 
 	// Printing to console for verification check
 	printf("%s\t%ld\n", phonebook[0].name, strlen(phonebook[0].name));
 	printf("%s\t%ld\n", phonebook[1].name, strlen(phonebook[1].name));
 	printf("%s\t%ld\n", querry, strlen(querry));
 	printf("%d\n", strcmp(querry, phonebook[0].name));
-
-	//FIXME: Detect empty line input to querry. Might have to do it in hackerrank.
 
 	// while(true) {
 	// 	printf("Enter string to test:\t");
