@@ -58,12 +58,10 @@ UPDATE_STRUCT(phonebook, account_count);
 // Flushing input buffer	
 flush_input_buffer();
 
-printf("============ TESTING SECTION ================\n");
 // Prompting user to enter string to test
+printf("============ TESTING SECTION ================\n");
 char querry[MAX_STR_LIM];
 strcpy(querry, GET_STRING());
-
-printf("======== PRINTING ALL USER INPUTS ===========\n");
 PRINT_ALL_GIVE(phonebook, querry, account_count);
 
 // while(true) {
