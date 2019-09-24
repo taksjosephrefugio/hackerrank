@@ -2,84 +2,91 @@
 #include<string.h>
 #include<stdbool.h>
 #define MAX_STR_LIM 512
+static int account_count = 0;
 
-typedef struct NAME_VALUE_PAIR {
-char name[MAX_STR_LIM];
-int number;
+typedef struct NAME_VALUE_PAIR 
+{
+	char name[MAX_STR_LIM];
+	int number;
 } NAME_VALUE_PAIR;
 
-void flush_input_buffer() {
-int c;
-while ((c = getchar()) != '\n' && c != EOF) { }
+void flush_input_buffer() 
+{
+	int c;
+	while ((c = getchar()) != '\n' && c != EOF) { }
 }
 
 void UPDATE_STRUCT(NAME_VALUE_PAIR* struct_placeholder, int size_of_struct) 
 {
-for (int i = 0; i < size_of_struct; i++) {
-	// Get user name
-	char tempstring[MAX_STR_LIM];
-	scanf("%s", tempstring);
-	strcpy(struct_placeholder[i].name, tempstring);
+	for (int i = 0; i < size_of_struct; i++) {
+		// Get user name
+		char tempstring[MAX_STR_LIM];
+		scanf("%s", tempstring);
+		strcpy(struct_placeholder[i].name, tempstring);
 
-	// Get user number
-	scanf("%d", &struct_placeholder[i].number);
-}
-printf("\n\n");
+		// Get user number
+		scanf("%d", &struct_placeholder[i].number);
+	}
+	printf("\n\n");
 }
 
 char* GET_STRING() 
 {
 	static char temp[MAX_STR_LIM];
 	printf("Enter string to test:\t");
-	scanf("%s", temp);
+	gets(temp);
 	return temp;
 }
 
-
-
-void PRINT_ALL_GIVE(NAME_VALUE_PAIR* phonebook, char querry[], int account_count)
+bool MATCH_CHECK(NAME_VALUE_PAIR* phonebook, char querry[], NAME_VALUE_PAIR* match_result)
 {
-	// // Printing to console for verification check
-	for (int i = 0; i < account_count; i++) { printf("%s\t%ld\n", phonebook[i].name, strlen(phonebook[i].name)); }
-	printf("%s\t%ld\n", querry, strlen(querry));
-	printf("%d\n", strcmp(querry, phonebook[0].name));
+	// Printing to console for verification check
+	bool found_result = false;
+	for (int i = 0; i < account_count; i++) {
+		if (!strcmp(querry, phonebook[i].name))
+		{
+			found_result = true;
+			strcpy(match_result->name, phonebook[i].name);
+			match_result->number = phonebook[i].number;
+			break;
+		}
+	}
+	return found_result;
 }
 
 int main()
 {	
-printf("========== USER INPUT SECTION ===============\n");
-int account_count = 0;
-scanf("%d", &account_count);
+	printf("========== USER INPUT SECTION ===============\n");
+	scanf("%d", &account_count);
 
-// Populate key-value data from user input
-NAME_VALUE_PAIR phonebook[account_count];
-UPDATE_STRUCT(phonebook, account_count);
+	// Populate key-value data from user input
+	NAME_VALUE_PAIR phonebook[account_count];
+	UPDATE_STRUCT(phonebook, account_count);
 
-// Flushing input buffer	
-flush_input_buffer();
+	// Flushing input buffer	
+	flush_input_buffer();
 
-// Prompting user to enter string to test
-printf("============ TESTING SECTION ================\n");
-char querry[MAX_STR_LIM];
-strcpy(querry, GET_STRING());
-PRINT_ALL_GIVE(phonebook, querry, account_count);
+	// Prompting user to enter string to test
+	printf("============ TESTING SECTION ================\n");
+	char querry[MAX_STR_LIM];
+	strcpy(querry, GET_STRING());
 
-// while(true) {
-// 	printf("Enter string to test:\t");
-// 	fgets(querry, MAX_STR_LIM, stdin);
-// 	bool match_found = false;
-
-// 	for (int i = 0; i < account_count; i++) {
-// 		int compare_result = strcmp(phonebook[i].name, querry);
-
-// 		if (compare_result == 0) {
-// 			printf("%s=%d\n", phonebook[i].name, phonebook[i].number);
-// 			match_found = true;
-// 			break;
-// 		}
-// 	}	
-// }
-return 0;
+	// FIXME: Implement link list to read unknown number of querries
+	while(strcmp(querry, "\0"))
+	{
+		NAME_VALUE_PAIR match_result;
+		bool found = MATCH_CHECK(phonebook, querry, &match_result);
+		if (found)
+		{
+			printf("%s=%d\n", match_result.name, match_result.number);
+		}
+		else if (!found)
+		{
+			printf("Not found\n");
+		}
+		strcpy(querry, GET_STRING());
+	}
+	return 0;
 }
 
 
