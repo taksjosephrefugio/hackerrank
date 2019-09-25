@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<string.h>
+#include<stdlib.h>
 #include<stdbool.h>
 #define MAX_STR_LIM 512
 static int account_count = 0;
@@ -9,6 +10,12 @@ typedef struct NAME_VALUE_PAIR
 	char name[MAX_STR_LIM];
 	int number;
 } NAME_VALUE_PAIR;
+
+typedef struct NODE 
+{
+	char member[MAX_STR_LIM];
+	struct NODE* next;
+} NODE;
 
 void flush_input_buffer() 
 {
@@ -71,9 +78,16 @@ int main()
 	char querry[MAX_STR_LIM];
 	strcpy(querry, GET_STRING());
 
-	// FIXME: Implement link list to read unknown number of querries
+	// // Initiating first node of the linked list
+	NODE* head = NULL;
+	head = (NODE*)malloc(sizeof(NODE));
+
+	// FIXME: Make sure linked list is functioning properly
 	while(strcmp(querry, "\0"))
 	{
+		head->next = head;
+		strcpy(head->member, querry);
+
 		NAME_VALUE_PAIR match_result;
 		bool found = MATCH_CHECK(phonebook, querry, &match_result);
 		if (found)
@@ -84,8 +98,16 @@ int main()
 		{
 			printf("Not found\n");
 		}
+
 		strcpy(querry, GET_STRING());
 	}
+
+	printf("%s\n", head->member);
+	head = head->next;
+	printf("%s\n", head->member);
+	head = head->next;
+	printf("%s\n", head->member);
+
 	return 0;
 }
 
